@@ -131,6 +131,8 @@ public class MesasReservasController {
         if (!reserva.isEmpty()){
             reserva.get(0).setEstadoReserva("C");
             reserva.get(0).setFechaFin(new Date());
+            List<ReservaConsumos> consumos = mesasService.getConsumosByReserva(reserva.get(0));
+            reserva.get(0).setDetalleConsumos(consumos);
             mesasService.actualizarReservaMesa(reserva.get(0));
         }else{
             Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "La reserva seleccionada no existe");

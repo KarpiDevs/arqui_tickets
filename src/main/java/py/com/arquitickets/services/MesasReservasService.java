@@ -104,11 +104,15 @@ public class MesasReservasService {
     }
 
     public ReservaConsumos agregarConsumoReserva(ReservaMesa reserva, Producto producto, Double cantidad){
-        ReservaConsumos consumo = new ReservaConsumos();
-        consumo.setReserva(reserva);
-        consumo.setProducto(producto);
-        consumo.setCantidad(cantidad);
-
+        ReservaConsumos consumo = reservaConsumosRepository.findByReservaAndProducto(reserva, producto);
+        if (consumo == null) {
+            consumo = new ReservaConsumos();
+            consumo.setReserva(reserva);
+            consumo.setProducto(producto);
+            consumo.setCantidad(cantidad);
+        }else{
+            consumo.setCantidad(consumo.getCantidad() + cantidad);
+        }
         consumo = reservaConsumosRepository.save(consumo);
         return consumo;
     }
