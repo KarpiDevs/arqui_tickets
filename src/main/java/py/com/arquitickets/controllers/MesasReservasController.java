@@ -107,10 +107,12 @@ public class MesasReservasController {
         ReservaConsumos consumo = null;
         List<ReservaMesa> reserva = mesasService.getReservaAbiertaByID(nroReserva);
         Optional<Producto> producto = productoService.getProductoById(reservaMesa.getCodProducto());
+        Boolean emitirAlerta;
 
         if (!reserva.isEmpty()){
             if (producto.isPresent()){
                 mesasService.agregarConsumoReserva(reserva.get(0), producto.get(), reservaMesa.getCantidad());
+                emitirAlerta = productoService.controlStockMinimo(producto.get().getCodProducto());
             }else{
                 Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "El producto seleccionado no existe");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -121,6 +123,9 @@ public class MesasReservasController {
         }
 
         Respuestas response = new Respuestas(HttpStatus.OK, "Consumo agregado a la reserva", reserva.get(0));
+        if (emitirAlerta){
+            response.setMessage(response.getMessage() + " - PRODUCTO LLEGÓ AL STOCK MÍNIMO DEFINIDO");
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

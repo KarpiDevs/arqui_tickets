@@ -21,6 +21,9 @@ public class Producto {
     @JoinColumn(name = "cod_categoria", referencedColumnName = "cod_categoria")
     private Categoria categoria;
 
+    @Column(name = "stock_actual", nullable = false)
+    private Double stockActual;
+
     public Long getCodProducto() {
         return codProducto;
     }
@@ -52,4 +55,8 @@ public class Producto {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
+
+    public Double getStockActual() { return stockActual; }
+
+    public void setStockActual(Double stockActual) {this.stockActual = stockActual; }
 }
