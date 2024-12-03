@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import py.com.arquitickets.controllers.MesasReservasController;
 import py.com.arquitickets.models.*;
-import py.com.arquitickets.repositories.CategoriaRepository;
-import py.com.arquitickets.repositories.MesaRepository;
-import py.com.arquitickets.repositories.ReservaConsumosRepository;
-import py.com.arquitickets.repositories.ReservaMesaRepository;
+import py.com.arquitickets.repositories.*;
 import py.com.arquitickets.utils.Respuestas;
 
 import java.util.ArrayList;
@@ -22,14 +19,16 @@ public class MesasReservasService {
     private final MesaRepository mesaRepository;
     private final ReservaMesaRepository reservaMesaRepository;
     private final ReservaConsumosRepository reservaConsumosRepository;
+    private final ProductoRepository productoRepository;
 
     @Autowired
     public MesasReservasService (MesaRepository mesaRepository,
                                  ReservaMesaRepository reservaMesaRepository,
-                                 ReservaConsumosRepository reservaConsumosRepository) {
+                                 ReservaConsumosRepository reservaConsumosRepository, ProductoRepository productoRepository) {
         this.mesaRepository = mesaRepository;
         this.reservaMesaRepository = reservaMesaRepository;
         this.reservaConsumosRepository = reservaConsumosRepository;
+        this.productoRepository = productoRepository;
     }
 
     // Se detallan servicios para Mesas nada más.
@@ -103,17 +102,18 @@ public class MesasReservasService {
         return reservaMesaRepository.save(reservaMesa);
     }
 
-    public ReservaConsumos agregarConsumoReserva(ReservaMesa reserva, Producto producto, Double cantidad){
+    public ReservaConsumos agregarConsumoReserva(ReservaMesa reserva, Producto producto, Double cantidad) {
         ReservaConsumos consumo = reservaConsumosRepository.findByReservaAndProducto(reserva, producto);
         if (consumo == null) {
             consumo = new ReservaConsumos();
             consumo.setReserva(reserva);
             consumo.setProducto(producto);
             consumo.setCantidad(cantidad);
-        }else{
+        } else {
             consumo.setCantidad(consumo.getCantidad() + cantidad);
         }
         consumo = reservaConsumosRepository.save(consumo);
+
         return consumo;
     }
 
