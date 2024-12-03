@@ -60,6 +60,7 @@ public class EmpleadoController {
             empleadoToUpdate.setFecNacimiento(empleadoDetails.getFecNacimiento());
             empleadoToUpdate.setCodTipDocumento(empleadoDetails.getCodTipDocumento());
             empleadoToUpdate.setCodPais(empleadoDetails.getCodPais());
+            empleadoToUpdate.setCodRol(empleadoDetails.getCodRol());
             empleadoService.saveEmpleado(empleadoToUpdate);
             Respuestas response = new Respuestas(HttpStatus.OK, "Empleado Actualizado");
             return new ResponseEntity<>(response, HttpStatus.OK);

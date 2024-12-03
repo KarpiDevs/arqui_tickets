@@ -37,6 +37,9 @@ public class Empleado {
     @Column(name = "cod_pais", nullable = false)
     private Integer codPais;
 
+    @Column(name = "cod_rol", nullable = false)
+    private String codRol;
+
     public Long getCodEmpleado() {
         return codEmpleado;
     }
@@ -107,5 +110,13 @@ public class Empleado {
 
     public void setCodPais(Integer codPais) {
         this.codPais = codPais;
+    }
+
+    public String getCodRol() {
+        return codRol;
+    }
+
+    public void setCodRol(String codRol) {
+        this.codRol = codRol;
     }
 }
