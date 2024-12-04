@@ -4,7 +4,7 @@
 
     @Entity
     @Table(name = "pedido_consumos")
-    @IdClass(ReservaConsumosId.class)
+    @IdClass(PedidoConsumosId.class)
     public class PedidoConsumo {
 
         @Id

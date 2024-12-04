@@ -1,8 +1,12 @@
 package py.com.arquitickets.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import py.com.arquitickets.dto.ConsumoDTO;
+import py.com.arquitickets.dto.ReservaDTO;
+import py.com.arquitickets.dto.ReservaDashboardDTO;
 import py.com.arquitickets.models.*;
 import py.com.arquitickets.repositories.*;
 import py.com.arquitickets.utils.Respuestas;
@@ -164,4 +168,49 @@ public class MesasReservasService {
                 .sum();  // Sumamos todos los valores
     }
 
+    public List<ConsumoDTO> ventasPorProducto() {
+        return reservaMesaRepository.ventasPorProducto();
+    }
+
+    public List<ReservaDTO> ocupacionMesas() {
+        return reservaMesaRepository.ocupacionMesas();
+    }
+
+    public List<ReservaDashboardDTO> ventaDiarias() {
+        List<Object[]> results = reservaMesaRepository.ventasDiarias();
+
+        List<ReservaDashboardDTO> ventasDiarias = new ArrayList<>();
+
+        for (Object[] result : results) {
+            // Asegúrate de hacer el cast correctamente
+            Long nroReservas = (Long) result[0]; // El primer elemento es el conteo de reservas
+            Double totalConsumo = (Double) result[1]; // El segundo elemento es la suma de totalConsumo
+
+            // Crea el DTO con estos datos
+            ReservaDashboardDTO reservaDTO = new ReservaDashboardDTO(nroReservas, totalConsumo);
+            ventasDiarias.add(reservaDTO);
+        }
+
+        return ventasDiarias;
+    }
+
+    /*public List<ConsumoDTO> obtenerVentaCategoria(Long codCategoria) {
+        List<Object[]> results = reservaMesaRepository.findByCategoria(codCategoria);
+
+        List<ConsumoDTO> ventasCat = new ArrayList<>();
+
+        for (Object[] result : results) {
+            // Asegúrate de hacer el cast correctamente
+            Long codProducto = (Long) result[0]; // El primer elemento es el conteo de reservas
+            String descProducto = (String) result[1]; // El segundo elemento es la suma de totalConsumo
+            Double precioUnitario = (Double) result[2]; // El segundo elemento es la suma de totalConsumo
+            Double cantidad = (Double) result[3]; // El segundo elemento es la suma de totalConsumo
+
+            // Crea el DTO con estos datos
+            ConsumoDTO reservaDTO = new ConsumoDTO(codProducto, descProducto, precioUnitario, cantidad);
+            ventasCat.add(reservaDTO);
+        }
+
+        return ventasCat;
+    }*/
 }

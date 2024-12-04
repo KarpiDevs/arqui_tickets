@@ -6,9 +6,9 @@ public class ConsumoDTO {
 
     String descProducto;
 
-    Double precioUnitario;
-
     Double cantidad;
+
+    Double precioUnitario;
 
     Double precioTotal;
 
@@ -17,7 +17,13 @@ public class ConsumoDTO {
         this.descProducto = descProducto;
         this.precioUnitario = precioUnitario;
         this.cantidad = cantidad;
-        this.precioTotal = this.precioUnitario * cantidad;
+        this.precioTotal = precioUnitario * cantidad;
+    }
+
+    public ConsumoDTO(Long codProducto, String descProducto, Double cantidad) {
+        this.codProducto = codProducto;
+        this.descProducto = descProducto;
+        this.cantidad = cantidad;
     }
 
     public Long getCodProducto() {

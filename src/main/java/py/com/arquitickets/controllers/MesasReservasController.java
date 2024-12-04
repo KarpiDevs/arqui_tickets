@@ -5,16 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import py.com.arquitickets.dto.CierreReservaDTO;
+import py.com.arquitickets.dto.ConsumoDTO;
 import py.com.arquitickets.dto.ReservaDTO;
+import py.com.arquitickets.dto.ReservaDashboardDTO;
 import py.com.arquitickets.models.*;
 import py.com.arquitickets.repositories.ReservaConsumosRepository;
 import py.com.arquitickets.services.*;
 import py.com.arquitickets.utils.Respuestas;
+import py.com.arquitickets.utils.RespuestasDashboard;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/mesas")
@@ -158,24 +158,54 @@ public class MesasReservasController {
     }
 
     @PostMapping("/reportes/empleados")
-    public ResponseEntity<Double> obtenerVentaEmpleado(@RequestBody Map<String,Integer> empleado) {
+    public ResponseEntity<Respuestas> obtenerVentaEmpleado(@RequestBody Map<String,Integer> empleado) {
         Integer codEmpleado = (Integer) empleado.get("codEmpleado");
         Double venta = mesasService.obtenerVentaEmpleado(codEmpleado);
-        return ResponseEntity.ok(venta);
+        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte de Empleados", venta);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/reportes/mesas")
-    public ResponseEntity<Double> obtenerVentaMesa(@RequestBody Map<String,Integer> mesas) {
+    public ResponseEntity<Respuestas> obtenerVentaMesa(@RequestBody Map<String,Integer> mesas) {
         Integer nroMesa = (Integer) mesas.get("nroMesa");
         Double venta = mesasService.obtenerVentaMesa(nroMesa);
-        return ResponseEntity.ok(venta);
+        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte de Mesas", venta);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/reportes/fecha")
-    public ResponseEntity<Double> obtenerVentaFecha(@RequestBody Map<String,Date> fechaInicio) {
+    public ResponseEntity<Respuestas> obtenerVentaFecha(@RequestBody Map<String,Date> fechaInicio) {
         Date fecha = (Date) fechaInicio.get("fechaInicio");
         Double venta = mesasService.obtenerVentaFecha(fecha);
-        return ResponseEntity.ok(venta);
+        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte por Fechas", venta);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /*@PostMapping("/reportes/categoria")
+    public ResponseEntity<Respuestas> obtenerVentaCategoria(@RequestBody Map<String,Long> codCategoria) {
+        Long categoria = (Long) codCategoria.get("codCategoria");
+        List<ConsumoDTO> venta = mesasService.obtenerVentaCategoria(categoria);
+        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte por Categoria", codCategoria);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }*/
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<RespuestasDashboard> obtenerDashboard() {
+        // Llamar a los tres servicios y obtener los datos
+        List<ConsumoDTO> topProductos = mesasService.ventasPorProducto();
+        List<ReservaDTO> ocupacionMesas = mesasService.ocupacionMesas();
+        List<ReservaDashboardDTO> ventasDiarias = mesasService.ventaDiarias();
+
+        // Crear un mapa para contener todas las respuestas
+        Map<String, Object> data = new HashMap<>();
+        data.put("Top Productos Vendidos", topProductos);
+        data.put("Ocupacion de Mesas", ocupacionMesas);
+        data.put("Facturación Diaria", ventasDiarias);
+
+        // Crear la respuesta con el mapa de datos
+        RespuestasDashboard response = new RespuestasDashboard(HttpStatus.OK, "Dashboard General", data);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 }
