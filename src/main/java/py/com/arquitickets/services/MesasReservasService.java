@@ -3,15 +3,12 @@ package py.com.arquitickets.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import py.com.arquitickets.controllers.MesasReservasController;
 import py.com.arquitickets.models.*;
 import py.com.arquitickets.repositories.*;
 import py.com.arquitickets.utils.Respuestas;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 @Service
 public class MesasReservasService {
@@ -90,13 +87,14 @@ public class MesasReservasService {
         return estadoMesa;
     }
 
-    public ReservaMesa crearReservaMesa(Cliente cliente, Mesa mesa){
+    public ReservaMesa crearReservaMesa(Cliente cliente, Mesa mesa, Integer codEmpleado){
         ReservaMesa reserva = new ReservaMesa();
         reserva.setCliente(cliente);
-        reserva.setMesa( mesa);
+        reserva.setMesa(mesa);
         reserva.setEstadoReserva("A");
         reserva.setTotalConsumo(0.0);
         reserva.setFechaInicio(new Date());
+        reserva.setCodEmpleado(codEmpleado);
         return reservaMesaRepository.save(reserva);
     }
 
@@ -131,6 +129,39 @@ public class MesasReservasService {
         consumo = reservaConsumosRepository.save(consumo);
 
         return consumo;
+    }
+
+    public Double obtenerVentaEmpleado(Integer codEmpleado) {
+        List<ReservaMesa> reservas = reservaMesaRepository.findByCodEmpleado(codEmpleado);
+
+        if (reservas.isEmpty()) {
+            return 0.0;
+        }
+        return reservas.stream()
+                .mapToDouble(ReservaMesa::getTotalConsumo)
+                .sum();  // Sumamos todos los valores
+    }
+
+    public Double obtenerVentaMesa(Integer nroMesa) {
+        List<ReservaMesa> reservas = reservaMesaRepository.findByNroMesa(nroMesa);
+
+        if (reservas.isEmpty()) {
+            return 0.0;
+        }
+        return reservas.stream()
+                .mapToDouble(ReservaMesa::getTotalConsumo)
+                .sum();  // Sumamos todos los valores
+    }
+
+    public Double obtenerVentaFecha(Date fechaInicio) {
+        List<ReservaMesa> reservas = reservaMesaRepository.findByFechaInicio(fechaInicio);
+
+        if (reservas.isEmpty()) {
+            return 0.0;
+        }
+        return reservas.stream()
+                .mapToDouble(ReservaMesa::getTotalConsumo)
+                .sum();  // Sumamos todos los valores
     }
 
 }

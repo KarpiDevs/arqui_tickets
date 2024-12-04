@@ -13,6 +13,7 @@ import py.com.arquitickets.utils.Respuestas;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -66,7 +67,7 @@ public class MesasReservasController {
         ReservaMesa reserva = null;
         if (cliente.isPresent()){
             if (mesa.isPresent()){
-                reserva =  mesasService.crearReservaMesa(cliente.get(), mesa.get() );
+                reserva =  mesasService.crearReservaMesa(cliente.get(), mesa.get(), reservaMesa.getCodEmpleado());
             }else{
                 Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "Mesa seleccionado no existe");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -156,5 +157,25 @@ public class MesasReservasController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/reportes/empleados")
+    public ResponseEntity<Double> obtenerVentaEmpleado(@RequestBody Map<String,Integer> empleado) {
+        Integer codEmpleado = (Integer) empleado.get("codEmpleado");
+        Double venta = mesasService.obtenerVentaEmpleado(codEmpleado);
+        return ResponseEntity.ok(venta);
+    }
+
+    @PostMapping("/reportes/mesas")
+    public ResponseEntity<Double> obtenerVentaMesa(@RequestBody Map<String,Integer> mesas) {
+        Integer nroMesa = (Integer) mesas.get("nroMesa");
+        Double venta = mesasService.obtenerVentaMesa(nroMesa);
+        return ResponseEntity.ok(venta);
+    }
+
+    @PostMapping("/reportes/fecha")
+    public ResponseEntity<Double> obtenerVentaFecha(@RequestBody Map<String,Date> fechaInicio) {
+        Date fecha = (Date) fechaInicio.get("fechaInicio");
+        Double venta = mesasService.obtenerVentaFecha(fecha);
+        return ResponseEntity.ok(venta);
+    }
 
 }

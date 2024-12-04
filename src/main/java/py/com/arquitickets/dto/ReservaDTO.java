@@ -8,6 +8,8 @@ public class ReservaDTO {
 
     private Double cantidad;
 
+    private Integer codEmpleado;
+
     public Long getCodCliente() {
         return codCliente;
     }
@@ -30,5 +32,13 @@ public class ReservaDTO {
 
     public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Integer getCodEmpleado() {
+        return codEmpleado;
+    }
+
+    public void setCodEmpleado(Integer codEmpleado) {
+        this.codEmpleado = codEmpleado;
     }
 }

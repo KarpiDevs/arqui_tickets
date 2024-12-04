@@ -24,6 +24,9 @@ public class ReservaMesa {
     @JoinColumn(name = "nro_mesa", referencedColumnName = "nro_mesa")
     private Mesa mesa;
 
+    @Column(name = "nro_mesa", nullable = false, insertable = false, updatable = false)
+    private Integer nroMesa;
+
     @Column(name = "estado_reserva", nullable = false)
     private String estadoReserva;
 
@@ -39,6 +42,9 @@ public class ReservaMesa {
     @ManyToOne
     @JoinColumn(name = "cod_mto_pago", referencedColumnName = "cod_mto_pago")
     private MetodoPago metodoPago;
+
+    @Column(name = "cod_empleado", nullable = false)
+    private Integer codEmpleado;
 
     @Transient
     private List<ConsumoDTO> detalleConsumos;
@@ -120,6 +126,22 @@ public class ReservaMesa {
 
     public void setMetodoPago(MetodoPago metodoPago) {
         this.metodoPago = metodoPago;
+    }
+
+    public Integer getCodEmpleado() {
+        return codEmpleado;
+    }
+
+    public void setCodEmpleado(Integer codEmpleado) {
+        this.codEmpleado = codEmpleado;
+    }
+
+    public Integer getNroMesa() {
+        return nroMesa;
+    }
+
+    public void setNroMesa(Integer nroMesa) {
+        this.nroMesa = nroMesa;
     }
 }
 
