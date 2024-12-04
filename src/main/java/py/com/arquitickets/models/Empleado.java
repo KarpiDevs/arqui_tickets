@@ -40,6 +40,9 @@ public class Empleado {
     @Column(name = "cod_rol", nullable = false)
     private String codRol;
 
+    @Column(name = "activo", nullable = false)
+    private String activo;
+
     public Long getCodEmpleado() {
         return codEmpleado;
     }
@@ -118,5 +121,13 @@ public class Empleado {
 
     public void setCodRol(String codRol) {
         this.codRol = codRol;
+    }
+
+    public String getActivo() {
+        return activo;
+    }
+
+    public void setActivo(String activo) {
+        this.activo = activo;
     }
 }

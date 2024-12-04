@@ -61,6 +61,7 @@ public class EmpleadoController {
             empleadoToUpdate.setCodTipDocumento(empleadoDetails.getCodTipDocumento());
             empleadoToUpdate.setCodPais(empleadoDetails.getCodPais());
             empleadoToUpdate.setCodRol(empleadoDetails.getCodRol());
+            empleadoToUpdate.setActivo(empleadoDetails.getActivo());
             empleadoService.saveEmpleado(empleadoToUpdate);
             Respuestas response = new Respuestas(HttpStatus.OK, "Empleado Actualizado");
             return new ResponseEntity<>(response, HttpStatus.OK);

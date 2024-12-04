@@ -54,6 +54,8 @@ public class ProductoController {
 
             producto.setDescProducto(productoDTO.getDescProducto());
             producto.setPrecioUnitario(productoDTO.getPrecioUnitario());
+            producto.setStockActual(productoDTO.getStockActual());
+            producto.setCodImpuesto(productoDTO.getCodImpuesto());
             producto.setCategoria(categoria.get());
 
             Producto savedProducto = productoService.saveProducto(producto);

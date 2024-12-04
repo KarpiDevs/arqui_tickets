@@ -4,6 +4,8 @@ public class ProductoDTO {
     private String descProducto;
     private Double precioUnitario;
     private Long codCategoria;
+    private Double stockActual;
+    private Integer codImpuesto;
 
     public String getDescProducto() {
         return descProducto;
@@ -27,5 +29,21 @@ public class ProductoDTO {
 
     public void setCodCategoria(Long codCategoria) {
         this.codCategoria = codCategoria;
+    }
+
+    public Double getStockActual() {
+        return stockActual;
+    }
+
+    public void setStockActual(Double stockActual) {
+        this.stockActual = stockActual;
+    }
+
+    public Integer getCodImpuesto() {
+        return codImpuesto;
+    }
+
+    public void setCodImpuesto(Integer codImpuesto) {
+        this.codImpuesto = codImpuesto;
     }
 }

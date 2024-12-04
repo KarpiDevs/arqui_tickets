@@ -40,6 +40,6 @@ public class ProductoService {
     public Boolean controlStockMinimo(Long id) {
         Optional<Producto> producto = productoRepository.findById(id);
 
-        return producto.get().getStockActual();
+        return false;
     }
 }

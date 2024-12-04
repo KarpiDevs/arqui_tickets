@@ -2,7 +2,6 @@ package py.com.arquitickets.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import py.com.arquitickets.models.Cliente;
 import py.com.arquitickets.models.Impuesto;
 import py.com.arquitickets.repositories.ImpuestoRepository;
 

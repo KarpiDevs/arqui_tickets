@@ -24,6 +24,9 @@ public class Producto {
     @Column(name = "stock_actual", nullable = false)
     private Double stockActual;
 
+    @Column(name = "cod_impuesto", nullable = false)
+    private Integer codImpuesto;
+
     public Long getCodProducto() {
         return codProducto;
     }
@@ -59,4 +62,12 @@ public class Producto {
     public Double getStockActual() { return stockActual; }
 
     public void setStockActual(Double stockActual) {this.stockActual = stockActual; }
+
+    public Integer getCodImpuesto() {
+        return codImpuesto;
+    }
+
+    public void setCodImpuesto(Integer codImpuesto) {
+        this.codImpuesto = codImpuesto;
+    }
 }
