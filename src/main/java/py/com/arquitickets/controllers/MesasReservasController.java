@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import py.com.arquitickets.dto.CierreReservaDTO;
 import py.com.arquitickets.dto.ReservaDTO;
 import py.com.arquitickets.models.*;
 import py.com.arquitickets.repositories.ReservaConsumosRepository;
-import py.com.arquitickets.services.CategoriaService;
-import py.com.arquitickets.services.ClienteService;
-import py.com.arquitickets.services.MesasReservasService;
-import py.com.arquitickets.services.ProductoService;
+import py.com.arquitickets.services.*;
 import py.com.arquitickets.utils.Respuestas;
 
 import java.util.Date;
@@ -24,12 +22,14 @@ public class MesasReservasController {
     private final MesasReservasService mesasService;
     private final ClienteService clienteService;
     private final ProductoService productoService;
+    private final MetodoPagoService metodoPagoService;
 
     @Autowired
-    public MesasReservasController(MesasReservasService mesasService, ClienteService clienteService, ProductoService productoService) {
+    public MesasReservasController(MesasReservasService mesasService, ClienteService clienteService, ProductoService productoService, MetodoPagoService metodoPagoService) {
         this.mesasService = mesasService;
         this.clienteService = clienteService;
         this.productoService = productoService;
+        this.metodoPagoService = metodoPagoService;
     }
 
     @GetMapping
@@ -88,7 +88,7 @@ public class MesasReservasController {
         if (!reserva.isEmpty()){
             if (cliente.isPresent()){
                 reserva.get(0).setCliente(cliente.get());
-                mesasService.actualizarReservaMesa(reserva.get(0));
+                mesasService.actualizarReservaMesa(reserva.get(0),null);
             }else{
                 Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "Mesa seleccionado no existe");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -130,17 +130,25 @@ public class MesasReservasController {
     }
 
     @PostMapping("/cerrar/{nroReserva}")
-    public ResponseEntity<Respuestas> cerrarReservaMesa(@PathVariable Long nroReserva) {
+    public ResponseEntity<Respuestas> cerrarReservaMesa(@RequestBody CierreReservaDTO cierreReserva, @PathVariable Long nroReserva) {
         List<ReservaMesa> reserva = mesasService.getReservaAbiertaByID(nroReserva);
+        Optional<MetodoPago> metodoPago = metodoPagoService.getMetodoPagoById(cierreReserva.getCodMetodoPago());
 
-        if (!reserva.isEmpty()){
-            reserva.get(0).setEstadoReserva("C");
-            reserva.get(0).setFechaFin(new Date());
-            List<ReservaConsumos> consumos = mesasService.getConsumosByReserva(reserva.get(0));
-            reserva.get(0).setDetalleConsumos(consumos);
-            mesasService.actualizarReservaMesa(reserva.get(0));
+        if (metodoPago.isPresent()) {
+
+            if (!reserva.isEmpty()) {
+                reserva.get(0).setEstadoReserva("C");
+                reserva.get(0).setFechaFin(new Date());
+                List<ReservaConsumos> consumos = mesasService.getConsumosByReserva(reserva.get(0));
+                reserva.get(0).setDetalleConsumos(consumos);
+                mesasService.actualizarReservaMesa(reserva.get(0), cierreReserva.getMontoPropina());
+            } else {
+                Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "La reserva seleccionada no existe");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
         }else{
-            Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "La reserva seleccionada no existe");
+            Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "El metodo de pago seleccionado no existe.");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 

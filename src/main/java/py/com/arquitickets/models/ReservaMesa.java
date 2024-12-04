@@ -36,6 +36,10 @@ public class ReservaMesa {
     @Column(name = "fecha_fin")
     private Date fechaFin;
 
+    @ManyToOne
+    @JoinColumn(name = "cod_mto_pago", referencedColumnName = "cod_mto_pago")
+    private MetodoPago metodoPago;
+
     @Transient
     private List<ConsumoDTO> detalleConsumos;
 
@@ -108,6 +112,14 @@ public class ReservaMesa {
                                                     consumo.getCantidad());
             this.detalleConsumos.add(detalle);
         }
+    }
+
+    public MetodoPago getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(MetodoPago metodoPago) {
+        this.metodoPago = metodoPago;
     }
 }
 

@@ -20,15 +20,17 @@ public class MesasReservasService {
     private final ReservaMesaRepository reservaMesaRepository;
     private final ReservaConsumosRepository reservaConsumosRepository;
     private final ProductoRepository productoRepository;
+    private final PropinaRepository propinaRepository;
 
     @Autowired
     public MesasReservasService (MesaRepository mesaRepository,
                                  ReservaMesaRepository reservaMesaRepository,
-                                 ReservaConsumosRepository reservaConsumosRepository, ProductoRepository productoRepository) {
+                                 ReservaConsumosRepository reservaConsumosRepository, ProductoRepository productoRepository, PropinaRepository propinaRepository) {
         this.mesaRepository = mesaRepository;
         this.reservaMesaRepository = reservaMesaRepository;
         this.reservaConsumosRepository = reservaConsumosRepository;
         this.productoRepository = productoRepository;
+        this.propinaRepository = propinaRepository;
     }
 
     // Se detallan servicios para Mesas nada más.
@@ -98,8 +100,22 @@ public class MesasReservasService {
         return reservaMesaRepository.save(reserva);
     }
 
-    public ReservaMesa actualizarReservaMesa(ReservaMesa reservaMesa) {
-        return reservaMesaRepository.save(reservaMesa);
+    public ReservaMesa actualizarReservaMesa(ReservaMesa reservaMesa, Double montoPropina) {
+        ReservaMesa reserva;
+        try{
+            reserva = reservaMesaRepository.save(reservaMesa);
+            // Solo si es distinto de null y mayor a 0 se inserta.
+            // Si es null significa que es una actualización de reserva.
+            if ((montoPropina != null) && (montoPropina > 0) ){
+                Propinas propinaMesa = new Propinas();
+                propinaMesa.setEmpleado( reservaMesa.getMesa().getEmpleado() );
+                propinaMesa.setMonto( montoPropina );
+                propinaRepository.save(propinaMesa);
+            }
+        }catch (Exception e){
+            reserva = null;
+        }
+        return reserva;
     }
 
     public ReservaConsumos agregarConsumoReserva(ReservaMesa reserva, Producto producto, Double cantidad) {

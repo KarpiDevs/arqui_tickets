@@ -24,6 +24,9 @@ public class Producto {
     @Column(name = "stock_actual", nullable = false)
     private Double stockActual;
 
+    @Column(name = "stock_minimo", nullable = false)
+    private Double stockMinimo;
+
     @Column(name = "cod_impuesto", nullable = false)
     private Integer codImpuesto;
 
@@ -62,6 +65,10 @@ public class Producto {
     public Double getStockActual() { return stockActual; }
 
     public void setStockActual(Double stockActual) {this.stockActual = stockActual; }
+
+    public Double getStockMinimo() { return stockMinimo; }
+
+    public void setStockMinimo(Double stockMinimo) {this.stockMinimo = stockMinimo; }
 
     public Integer getCodImpuesto() {
         return codImpuesto;

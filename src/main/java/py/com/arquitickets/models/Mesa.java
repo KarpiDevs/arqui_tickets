@@ -17,6 +17,10 @@ public class Mesa {
     @Column(name = "cantidad_sillas", nullable = false)
     private Long cantSillas;
 
+    @ManyToOne
+    @JoinColumn(name = "cod_empleado", referencedColumnName = "cod_empleado")
+    private Empleado empleado;
+
     public Long getNroMesa() {
         return nroMesa;
     }
@@ -36,4 +40,8 @@ public class Mesa {
     public Long getCantSillas() { return cantSillas; }
 
     public void setCantSillas(Long cantSillas) { this.cantSillas = cantSillas; }
+
+    public Empleado getEmpleado() { return empleado; }
+
+    public void setEmpleado(Empleado empleado) { this.empleado = empleado; }
 }

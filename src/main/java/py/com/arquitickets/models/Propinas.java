@@ -11,8 +11,9 @@ public class Propinas {
     @Column(name = "cod_propinas", nullable = false)
     private Long codPropina;
 
-    @Column(name = "cod_empleado", nullable = false)
-    private String codEmpleado;
+    @ManyToOne
+    @JoinColumn(name = "cod_empleado", referencedColumnName = "cod_empleado")
+    private Empleado empleado;
 
     @Column(name = "monto", nullable = false)
     private Double monto;
@@ -25,12 +26,12 @@ public class Propinas {
         this.codPropina = codPropina;
     }
 
-    public String getCodEmpleado() {
-        return codEmpleado;
+    public Empleado getEmpleado() {
+        return empleado;
     }
 
-    public void setCodEmpleado(String codEmpleado) {
-        this.codEmpleado = codEmpleado;
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
     }
 
     public Double getMonto() {
