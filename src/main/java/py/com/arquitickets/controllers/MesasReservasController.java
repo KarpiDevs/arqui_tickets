@@ -26,13 +26,15 @@ public class MesasReservasController {
     private final ClienteService clienteService;
     private final ProductoService productoService;
     private final MetodoPagoService metodoPagoService;
+    private final EmpleadoService empleadoService;
 
     @Autowired
-    public MesasReservasController(MesasReservasService mesasService, ClienteService clienteService, ProductoService productoService, MetodoPagoService metodoPagoService) {
+    public MesasReservasController(MesasReservasService mesasService, ClienteService clienteService, ProductoService productoService, MetodoPagoService metodoPagoService, EmpleadoService empleadoService) {
         this.mesasService = mesasService;
         this.clienteService = clienteService;
         this.productoService = productoService;
         this.metodoPagoService = metodoPagoService;
+        this.empleadoService = empleadoService;
     }
 
     @GetMapping
@@ -46,6 +48,29 @@ public class MesasReservasController {
     public ResponseEntity<Respuestas> crearCantidadMesas(@PathVariable Long cantidad) {
         Respuestas resMesas = mesasService.crearMesas(cantidad);
         return new ResponseEntity<>(resMesas, HttpStatus.OK);
+    }
+
+    @PutMapping("asignar/{nroMesa}/{codEmpleado}")
+    public ResponseEntity<Respuestas> crearCantidadMesas(@PathVariable Long nroMesa, Long codEmpleado) {
+        Optional<Mesa> mesa = mesasService.getMesaById(nroMesa);
+        Mesa mesaAsignada;
+        if (mesa.isPresent()){
+            Optional<Empleado> empleado = empleadoService.getEmpleadoById(codEmpleado);
+
+            if (empleado.isPresent()){
+                mesaAsignada= mesasService.asignarEmpleado(mesa.get(), empleado.get());
+            }else{
+                Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "Empleado seleccionado no existe");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
+        }else{
+            Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "Mesa seleccionada no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        Respuestas response = new Respuestas(HttpStatus.OK, "Empleado asignado correctamente a la mesa");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/estado/{nroMesa}")

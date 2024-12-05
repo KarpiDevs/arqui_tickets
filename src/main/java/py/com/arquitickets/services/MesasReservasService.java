@@ -215,4 +215,9 @@ public class MesasReservasService {
 
         return ventasCat;
     }
+
+    public Mesa asignarEmpleado(Mesa mesa, Empleado empleado){
+        mesa.setEmpleado(empleado);
+        return mesaRepository.save(mesa);
+    }
 }
