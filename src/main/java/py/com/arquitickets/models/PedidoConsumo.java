@@ -24,7 +24,7 @@
             return pedido;
         }
 
-        public void setReserva(Pedido pedido) {
+        public void setPedido(Pedido pedido) {
             this.pedido = pedido;
         }
 

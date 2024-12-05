@@ -33,10 +33,6 @@ public class Pedido {
     @JoinColumn(name = "cod_mto_pago", referencedColumnName = "cod_mto_pago")
     private MetodoPago metodoPago;
 
-    @ManyToOne
-    @JoinColumn(name = "cod_empleado", referencedColumnName = "cod_empleado")
-    private Empleado empleado;
-
     @Transient
     private List<ConsumoDTO> detalleConsumos;
 
@@ -86,14 +82,6 @@ public class Pedido {
 
     public void setMetodoPago(MetodoPago metodoPago) {
         this.metodoPago = metodoPago;
-    }
-
-    public Empleado getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
     }
 
     public void setDetalleConsumos(List<PedidoConsumo> detalleConsumos) {

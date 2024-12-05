@@ -39,7 +39,18 @@ public class ProductoService {
 
     public Boolean controlStockMinimo(Long id) {
         Optional<Producto> producto = productoRepository.findById(id);
+        Double vStockMinimo, vStockActual;
+        if (producto.get().getStockActual() == null){
+            vStockActual = 0.0;
+        }else{
+            vStockActual = producto.get().getStockActual();
+        }
 
-        return producto.get().getStockActual() <= producto.get().getStockMinimo();
+        if (producto.get().getStockMinimo() == null){
+            vStockMinimo = 0.0;
+        }else{
+            vStockMinimo = producto.get().getStockMinimo();
+        }
+        return vStockActual <= vStockMinimo;
     }
 }
