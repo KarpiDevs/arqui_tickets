@@ -50,8 +50,8 @@ public class MesasReservasController {
         return new ResponseEntity<>(resMesas, HttpStatus.OK);
     }
 
-    @PutMapping("asignar/{nroMesa}/{codEmpleado}")
-    public ResponseEntity<Respuestas> crearCantidadMesas(@PathVariable Long nroMesa, Long codEmpleado) {
+    @PutMapping("/asignar/{nroMesa}/{codEmpleado}")
+    public ResponseEntity<Respuestas> crearCantidadMesas(@PathVariable Long nroMesa,@PathVariable Long codEmpleado) {
         Optional<Mesa> mesa = mesasService.getMesaById(nroMesa);
         Mesa mesaAsignada;
         if (mesa.isPresent()){

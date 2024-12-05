@@ -53,6 +53,12 @@ public class PedidosController {
         Optional<Producto> producto = productoService.getProductoById(pedidoReq.getCodProducto());
         Boolean emitirAlerta;
         Double vStockActual;
+
+        if (!producto.isPresent()){
+            Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "El producto seleccionado no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
         if (producto.get().getStockActual() == null){
             vStockActual = 0.0;
         }else{
@@ -64,13 +70,8 @@ public class PedidosController {
         }
 
         if (pedido.isPresent()){
-            if (producto.isPresent()){
-                pedidoService.agregarConsumoPedido(pedido.get(), producto.get(), pedidoReq.getCantidad());
-                emitirAlerta = productoService.controlStockMinimo(producto.get().getCodProducto());
-            }else{
-                Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "El producto seleccionado no existe");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
+            pedidoService.agregarConsumoPedido(pedido.get(), producto.get(), pedidoReq.getCantidad());
+            emitirAlerta = productoService.controlStockMinimo(producto.get().getCodProducto());
         }else{
             Respuestas response = new Respuestas(HttpStatus.NOT_FOUND, "El pedido seleccionado no existe");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
