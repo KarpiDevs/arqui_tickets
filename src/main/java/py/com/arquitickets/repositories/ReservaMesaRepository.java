@@ -9,6 +9,9 @@ import py.com.arquitickets.dto.ReservaDTO;
 import py.com.arquitickets.models.Mesa;
 import py.com.arquitickets.models.ReservaMesa;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Date;
 import java.util.List;
 
@@ -36,11 +39,11 @@ public interface ReservaMesaRepository extends JpaRepository<ReservaMesa, Long> 
             "FROM ReservaMesa a ")
     List<Object[]> ventasDiarias();
 
-    /*@Query("SELECT p.codProducto, p.descProducto, p.precioUnitario, SUM(C.cantidad) " +
+    @Query("SELECT P.codProducto, P.descProducto, P.precioUnitario, SUM(C.cantidad) " +
             "FROM Producto P " +
-            "JOIN ReservaConsumos C ON p.codProducto = c.producto.codProducto " +
-            "WHERE p.categoria.codCategoria = :codCategoria " +
-            "GROUP BY p.codProducto, p.descProducto")
-    List<Object[]> findByCategoria(@Param("codCategoria") Long codCategoria);*/
+            "JOIN ReservaConsumos C ON P.codProducto = C.producto.codProducto " +
+            "WHERE P.categoria.codCategoria = :codCategoria " +
+            "GROUP BY P.codProducto, P.descProducto")
+    List<Object[]> findByCategoria(@Param("codCategoria") Long codCategoria);
 }
 

@@ -12,6 +12,8 @@ import py.com.arquitickets.repositories.*;
 import py.com.arquitickets.utils.Respuestas;
 
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -194,7 +196,7 @@ public class MesasReservasService {
         return ventasDiarias;
     }
 
-    /*public List<ConsumoDTO> obtenerVentaCategoria(Long codCategoria) {
+    public List<ConsumoDTO> obtenerVentaCategoria(Long codCategoria) {
         List<Object[]> results = reservaMesaRepository.findByCategoria(codCategoria);
 
         List<ConsumoDTO> ventasCat = new ArrayList<>();
@@ -212,5 +214,5 @@ public class MesasReservasService {
         }
 
         return ventasCat;
-    }*/
+    }
 }

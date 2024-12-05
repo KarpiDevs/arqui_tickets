@@ -14,6 +14,8 @@ import py.com.arquitickets.services.*;
 import py.com.arquitickets.utils.Respuestas;
 import py.com.arquitickets.utils.RespuestasDashboard;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @RestController
@@ -161,7 +163,7 @@ public class MesasReservasController {
     public ResponseEntity<Respuestas> obtenerVentaEmpleado(@RequestBody Map<String,Integer> empleado) {
         Integer codEmpleado = (Integer) empleado.get("codEmpleado");
         Double venta = mesasService.obtenerVentaEmpleado(codEmpleado);
-        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte de Empleados", venta);
+        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte de Venta por Empleados", venta);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -169,7 +171,7 @@ public class MesasReservasController {
     public ResponseEntity<Respuestas> obtenerVentaMesa(@RequestBody Map<String,Integer> mesas) {
         Integer nroMesa = (Integer) mesas.get("nroMesa");
         Double venta = mesasService.obtenerVentaMesa(nroMesa);
-        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte de Mesas", venta);
+        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte de Venta por Mesas", venta);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -181,13 +183,15 @@ public class MesasReservasController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    /*@PostMapping("/reportes/categoria")
+
+
+    @PostMapping("/reportes/categoria")
     public ResponseEntity<Respuestas> obtenerVentaCategoria(@RequestBody Map<String,Long> codCategoria) {
         Long categoria = (Long) codCategoria.get("codCategoria");
         List<ConsumoDTO> venta = mesasService.obtenerVentaCategoria(categoria);
-        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte por Categoria", codCategoria);
+        Respuestas response = new Respuestas(HttpStatus.OK, "Reporte por Categoria", venta);
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }*/
+    }
 
     @GetMapping("/dashboard")
     public ResponseEntity<RespuestasDashboard> obtenerDashboard() {
