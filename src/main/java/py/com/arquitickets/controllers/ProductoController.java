@@ -55,6 +55,7 @@ public class ProductoController {
             producto.setDescProducto(productoDTO.getDescProducto());
             producto.setPrecioUnitario(productoDTO.getPrecioUnitario());
             producto.setStockActual(productoDTO.getStockActual());
+            producto.setStockMinimo(productoDTO.getStockMinimo());
             producto.setCodImpuesto(productoDTO.getCodImpuesto());
             producto.setCategoria(categoria.get());
 
@@ -78,6 +79,8 @@ public class ProductoController {
                 productoToUpdate.setDescProducto(productoDTO.getDescProducto());
                 productoToUpdate.setPrecioUnitario(productoDTO.getPrecioUnitario());
                 productoToUpdate.setCategoria(categoria.get());
+                productoToUpdate.setStockActual(productoDTO.getStockActual());
+                productoToUpdate.setStockMinimo(productoDTO.getStockMinimo());
 
                 Producto updatedProducto = productoService.saveProducto(productoToUpdate);
                 Respuestas response = new Respuestas(HttpStatus.OK, "Producto actualizado exitosamente", updatedProducto);

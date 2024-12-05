@@ -21,10 +21,10 @@ public class Producto {
     @JoinColumn(name = "cod_categoria", referencedColumnName = "cod_categoria")
     private Categoria categoria;
 
-    @Column(name = "stock_actual", nullable = false)
+    @Column(name = "stock_actual", nullable = true)
     private Double stockActual;
 
-    @Column(name = "stock_minimo", nullable = false)
+    @Column(name = "stock_minimo", nullable = true)
     private Double stockMinimo;
 
     @Column(name = "cod_impuesto", nullable = false)

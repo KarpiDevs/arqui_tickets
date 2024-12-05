@@ -5,6 +5,7 @@ public class ProductoDTO {
     private Double precioUnitario;
     private Long codCategoria;
     private Double stockActual;
+    private Double stockMinimo;
     private Integer codImpuesto;
 
     public String getDescProducto() {
@@ -29,6 +30,14 @@ public class ProductoDTO {
 
     public void setCodCategoria(Long codCategoria) {
         this.codCategoria = codCategoria;
+    }
+
+    public Double getStockMinimo() {
+        return stockMinimo;
+    }
+
+    public void setStockMinimo(Double stockMinimo) {
+        this.stockMinimo = stockMinimo;
     }
 
     public Double getStockActual() {

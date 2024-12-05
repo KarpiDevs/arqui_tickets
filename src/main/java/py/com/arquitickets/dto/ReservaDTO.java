@@ -20,15 +20,25 @@ public class ReservaDTO {
 
     private Double totalConsumo;
 
+    public ReservaDTO() {
+    }
+
+    public ReservaDTO(Long codCliente, Long codProducto, Double cantidad, Integer codEmpleado, String estadoReserva, Long nroMesa, String descMesa, Long nroReserva, Double totalConsumo) {
+        this.codCliente = codCliente;
+        this.codProducto = codProducto;
+        this.cantidad = cantidad;
+        this.codEmpleado = codEmpleado;
+        this.estadoReserva = estadoReserva;
+        this.nroMesa = nroMesa;
+        this.descMesa = descMesa;
+        this.nroReserva = nroReserva;
+        this.totalConsumo = totalConsumo;
+    }
+
     public ReservaDTO(Long nroMesa, String descMesa, String estadoReserva) {
         this.nroMesa = nroMesa;
         this.descMesa = descMesa;
         this.estadoReserva = estadoReserva;
-    }
-
-    public ReservaDTO(Long nroReserva, Double totalConsumo) {
-        this.nroReserva = nroReserva;
-        this.totalConsumo = totalConsumo;
     }
 
     public Long getCodCliente() {
